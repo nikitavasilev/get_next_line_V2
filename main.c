@@ -6,7 +6,7 @@
 /*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 03:12:14 by nvasilev          #+#    #+#             */
-/*   Updated: 2021/08/15 12:10:08 by nvasilev         ###   ########.fr       */
+/*   Updated: 2021/08/16 00:59:18 by nvasilev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,13 @@ int		main(void)
 
 	line = NULL;
 	fd = open("file.txt", O_RDONLY);
-	//get_next_line(fd);
-	//get_next_line(fd);
-	//get_next_line(fd);
 
-	i = 0;
+	i = 1;
 	while ((line = get_next_line(fd)))
 	{
-		printf("\nCALL #%lu\n", i++);
-		printf("\nLINE: %s\n", line);
+		printf("\nLINE #%lu: %s\n", i++, line);
 		free(line);
 	}
-
-	//printf("%s\n", get_next_line(fd));
 	close(fd);
 	return (0);
 }
