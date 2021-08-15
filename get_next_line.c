@@ -6,7 +6,7 @@
 /*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 02:58:22 by nvasilev          #+#    #+#             */
-/*   Updated: 2021/08/15 12:20:31 by nvasilev         ###   ########.fr       */
+/*   Updated: 2021/08/16 00:48:52 by nvasilev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,8 @@ char	*get_next_line(int fd)
 
 	tmp = NULL;
 	line = NULL;
-	if (BUFFER_SIZE < 1 || fd == -1 || read(fd, buf, 0) == -1)
-	{
-		return (0);
-	}
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buf, 0) < 0)
+		return (NULL);
 	bzero(buf, BUFFER_SIZE + 1);
 	printf ("CHARACTERS READ: %lu\n", read(fd, buf, BUFFER_SIZE));
 	printf("%s\n\n", buf);
