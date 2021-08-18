@@ -6,7 +6,7 @@
 /*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 04:19:10 by nvasilev          #+#    #+#             */
-/*   Updated: 2021/08/18 18:37:44 by nvasilev         ###   ########.fr       */
+/*   Updated: 2021/08/18 18:42:48 by nvasilev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str = malloc(s_len + 1);
 	i = 0;
 	if (s_len)
-	while (s[start] && i < len)
-		str[i++] = s[start++];
+	{
+		while (s[start] && i < len)
+			str[i++] = s[start++];
+	}
 	str[i] = '\0';
 	return (str);
 }
