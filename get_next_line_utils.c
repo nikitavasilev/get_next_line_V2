@@ -6,7 +6,7 @@
 /*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 04:19:10 by nvasilev          #+#    #+#             */
-/*   Updated: 2021/08/15 05:14:33 by nvasilev         ###   ########.fr       */
+/*   Updated: 2021/08/18 16:17:48 by nvasilev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	if (!s1 || !s2)
 		return (0);
-	if (!(str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1)))
+	str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!str)
 		return (0);
 	i = 0;
 	while (s1[i])
@@ -52,7 +53,8 @@ char	*ft_strdup(const char *s1)
 	size_t	i;
 	char	*copy;
 
-	if (!(copy = malloc(ft_strlen(s1) + 1)))
+	copy = malloc(ft_strlen(s1) + 1);
+	if (!copy)
 		return (0);
 	i = 0;
 	while (s1[i])
@@ -62,4 +64,35 @@ char	*ft_strdup(const char *s1)
 	}
 	copy[i] = s1[i];
 	return (copy);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*str;
+	size_t	i;
+
+	str = malloc(len + 1);
+	if (!str || !s)
+		return (0);
+	i = 0;
+	while (s[start + i] && i < len && start < ft_strlen(s))
+	{
+		str[i] = s[start + i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s)
+	{
+		if (*s == c)
+			return ((char *)s);
+		s++;
+	}
+	if (*s == c)
+		return ((char *)s);
+	return (0);
 }
