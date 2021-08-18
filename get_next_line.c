@@ -6,52 +6,80 @@
 /*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 02:58:22 by nvasilev          #+#    #+#             */
-/*   Updated: 2021/08/16 00:48:52 by nvasilev         ###   ########.fr       */
+/*   Updated: 2021/08/18 16:23:56 by nvasilev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <strings.h>
-#include <string.h>
+
+void	free_and_reset(char **pointer)
+{
+	free(*pointer);
+	*pointer = NULL;
+}
+
+char	*get_line(char **remainder, char **line)
+{
+	size_t	len;
+	char	*new_rem;
+
+	len = 0;
+	new_rem = NULL;
+	while ((*remainder)[len] != '\n' && (*remainder)[len])
+		len++;
+	if ((*remainder)[len] == '\n')
+	{
+		*line = ft_substr(*remainder, 0, (len + 1));
+		new_rem = ft_strdup(&(*remainder)[len + 1]);
+	}
+	else
+		*line = ft_strdup(*remainder);
+	free_and_reset(remainder);
+	return (new_rem);
+}
+
+size_t	read_file(int fd, char **buffer, char **remainder, char **line)
+{
+	char	*temp;
+	size_t	ret_read;
+
+	ret_read = TRUE;
+	while (!ft_strchr(*remainder, '\n') && ret_read)
+	{
+		ret_read = read(fd, *buffer, BUFFER_SIZE);
+		(*buffer)[ret_read] = '\0';
+		temp = *remainder;
+		*remainder = ft_strjoin(temp, *buffer);
+		free(temp);
+	}
+	free_and_reset(buffer);
+	*remainder = get_line(remainder, line);
+	if (!(**line))
+		free_and_reset(line);
+	return (ret_read);
+}
 
 char	*get_next_line(int fd)
 {
-	char			buf[BUFFER_SIZE + 1];
+	static char		*remainder = NULL;
+	char			*buffer;
 	char			*line;
-	int				i;
-	static char		*rem;
-	char			*tmp;
+	size_t			ret_read;
 
-	tmp = NULL;
-	line = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buf, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	bzero(buf, BUFFER_SIZE + 1);
-	printf ("CHARACTERS READ: %lu\n", read(fd, buf, BUFFER_SIZE));
-	printf("%s\n\n", buf);
-
-	i = 0;
-	while (buf[i] != '\n' && buf[i] != EOF)
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	if (read(fd, buffer, 0) < 0)
 	{
-		i++;
+		free(buffer);
+		return (NULL);
 	}
-	if (rem)
-	{
-		tmp = line;
-		line = ft_strjoin(rem, buf);
-		free(tmp);
-	}
-	else
-	{
-		if (!(line = malloc(strlen(buf) + 1 - i)))
-			return (0);
-		strncpy(line, buf, i++);
-	}
-	printf("LINE: %s\n", line);
-	//strncpy(rem, &buf[i] + 1, strlen(buf) + 1 - i);
-	tmp = rem;
-	rem = ft_strdup(&buf[i] + 1);
-	free(tmp);
-	printf("REMAINDER: %s\n", rem);
+	if (!remainder)
+		remainder = ft_strdup("");
+	ret_read = read_file(fd, &buffer, &remainder, &line);
+	if (!ret_read && !line)
+		return (NULL);
 	return (line);
 }
