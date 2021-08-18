@@ -6,7 +6,7 @@
 /*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/15 04:19:10 by nvasilev          #+#    #+#             */
-/*   Updated: 2021/08/18 16:17:48 by nvasilev         ###   ########.fr       */
+/*   Updated: 2021/08/18 18:37:44 by nvasilev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,21 @@ char	*ft_strdup(const char *s1)
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*str;
+	size_t	s_len;
 	size_t	i;
 
-	str = malloc(len + 1);
-	if (!str || !s)
+	if (!s)
 		return (0);
+	s_len = ft_strlen(s);
+	if (start > s_len)
+		s_len = 0;
+	if (s_len > len)
+		s_len = len;
+	str = malloc(s_len + 1);
 	i = 0;
-	while (s[start + i] && i < len && start < ft_strlen(s))
-	{
-		str[i] = s[start + i];
-		i++;
-	}
+	if (s_len)
+	while (s[start] && i < len)
+		str[i++] = s[start++];
 	str[i] = '\0';
 	return (str);
 }
