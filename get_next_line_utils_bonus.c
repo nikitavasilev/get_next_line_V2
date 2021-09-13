@@ -6,7 +6,7 @@
 /*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 18:03:06 by nvasilev          #+#    #+#             */
-/*   Updated: 2021/08/18 18:42:23 by nvasilev         ###   ########.fr       */
+/*   Updated: 2021/09/13 23:07:47 by nvasilev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (s_len > len)
 		s_len = len;
 	str = malloc(s_len + 1);
+	if (!str)
+		return (0);
 	i = 0;
 	if (s_len)
 	{
